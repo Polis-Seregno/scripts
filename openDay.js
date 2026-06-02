@@ -60,15 +60,8 @@ function capitalizeWords(str) {
     return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 
-async function fetchComuniData() {
-    const url = atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL0x1Y2FBLXBvbGlzL0ZpbGVVdGlsaXR5QHJlZnMvaGVhZHMvbWFpbi9Db211bmlDb21wbGV0aS5qc29u");
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Errore nel recupero del file JSON");
-    return await response.json();
-}
-
 async function fetchComuniCF() {
-    const url = atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL0x1Y2FBLXBvbGlzL0ZpbGVVdGlsaXR5QHJlZnMvaGVhZHMvbWFpbi9Db211bmlDb2RpY2VGaXNjYWxlLmpzb24=");
+    const url = atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL1BvbGlzLVNlcmVnbm8vSlNPTnNAcmVmcy9oZWFkcy9tYWluL2NvbXVuaUNGLmpzb24=");
     const response = await fetch(url);
     if (!response.ok) throw new Error("Errore nel recupero del file JSON");
     return await response.json();
@@ -88,41 +81,6 @@ async function populateListComuniCF() {
                 datalist.appendChild(option);
             }
         }
-    } catch (error) {
-        console.error('Errore:', error);
-    }
-}
-
-async function populateListComuni() {
-    try {
-        const data = await fetchComuniData();
-        const datalist = document.querySelector("#listacomuni");
-        const codiciAggiunti = new Set();
-
-        for (const comune of Object.values(data)) {
-            if (!codiciAggiunti.has(comune.codice)) {
-                codiciAggiunti.add(comune.codice);
-                const option = document.createElement('option');
-                option.value = comune.denominazione;
-                datalist.appendChild(option);
-            }
-        }
-    } catch (error) {
-        console.error('Errore:', error);
-    }
-}
-
-async function populateListProvincie() {
-    try {
-        const data = await fetchComuniData();
-        const datalist = document.querySelector('#listaprovincie');
-        const sigleSet = new Set(Object.values(data).map(comune => comune.sigla_provincia));
-
-        Array.from(sigleSet).sort().forEach(sigla => {
-            const option = document.createElement('option');
-            option.value = sigla;
-            datalist.appendChild(option);
-        });
     } catch (error) {
         console.error('Errore:', error);
     }
@@ -153,24 +111,6 @@ async function calcolaCodiceFiscaleHandler() {
 }
 
 document.querySelector("#calcolacf").addEventListener("click", calcolaCodiceFiscaleHandler);
-
-document.querySelector("#city").addEventListener("change", async function () {
-    const comuneNome = this.value;
-    const capfield = document.querySelector("#zip");
-    const provinciafield = document.querySelector("#state");
-    try {
-        const data = await fetchComuniData();
-        for (const comune of Object.values(data)) {
-            if (comune.denominazione === comuneNome) {
-                capfield.value = comune.cap;
-                provinciafield.value = comune.sigla_provincia;
-                break;
-            }
-        }
-    } catch (error) {
-        console.error('Errore:', error);
-    }
-});
 
 document.querySelector('#datanascita').addEventListener('change', function () {
     const dataNascita = this.value;
@@ -254,7 +194,5 @@ document.querySelector("#form").addEventListener("submit", sendForm);
 
 document.addEventListener("DOMContentLoaded", () => {
     fillForm();
-    populateListComuniCF();
-    populateListComuni();
-    populateListProvincie();
+    populateListComuniCF().then(r => {});
 });
