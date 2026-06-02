@@ -104,7 +104,7 @@ export async function calcoloCodiceFiscale(nome,cognome,dataNascita,sesso,luogoN
 
 async function getCodiceComune(comuneNascita) {
        try {
-           const response = await fetch(atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL0x1Y2FBLXBvbGlzL0ZpbGVVdGlsaXR5QHJlZnMvaGVhZHMvbWFpbi9Db211bmlDb2RpY2VGaXNjYWxlLmpzb24="));
+           const response = await fetch(atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL1BvbGlzLVNlcmVnbm8vSlNPTnNAcmVmcy9oZWFkcy9tYWluL2NvbXVuaUNGLmpzb24="));
            if (!response.ok) {
                throw new Error('Errore nel recupero del file JSON');
            }
