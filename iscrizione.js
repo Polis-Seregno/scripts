@@ -146,7 +146,7 @@ function openFromEmail() {
 
             if (!el) return;
 
-            const tag = el.tagName.toLowerCase();
+            const tag = el.type;
 
             if (tag === "select" || tag === "button" || el.type === "button" || el.type === "submit" || el.type === "reset") {
                 el.disabled = true;
