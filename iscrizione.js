@@ -22,14 +22,15 @@ function fillForm() {
     const params = getQueryParams();
 
     for (const key in params) {
-        let value = params[key];
-
         const element = document.getElementsByName(key)[0];
+
         if (!element) continue;
 
-        if (key === "datanascita" && value.includes("/")) {
+        let value = params[key];
+
+        if (element.type === "date" && value.includes("/")) {
             const [day, month, year] = value.split("/");
-            value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+            value = `${year}-${month}-${day}`;
         }
 
         element.value = value;
