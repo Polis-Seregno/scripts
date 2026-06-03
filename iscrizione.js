@@ -20,11 +20,19 @@ function getQueryParams() {
 
 function fillForm() {
     const params = getQueryParams();
+
     for (const key in params) {
+        let value = params[key];
+
         const element = document.getElementsByName(key)[0];
-        if (element) {
-            element.value = params[key];
+        if (!element) continue;
+
+        if (key === "datanascita" && value.includes("/")) {
+            const [day, month, year] = value.split("/");
+            value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
         }
+
+        element.value = value;
     }
 }
 
