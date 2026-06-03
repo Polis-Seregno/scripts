@@ -277,9 +277,9 @@ function sendForm(event) {
 document.querySelector("#form").addEventListener("submit", sendForm);
 
 document.addEventListener("DOMContentLoaded", () => {
-    fillForm();
-    openFromEmail();
     populateListComuniCF();
     populateListComuni();
     populateListProvincie();
+    fillForm();
+    openFromEmail();
 });
