@@ -136,18 +136,17 @@ function openFromEmail() {
         campi.forEach(id => {
             const el = document.getElementById(id);
 
-            if (el) {
-                if (
-                    el.tagName.toLowerCase() === "button" ||
-                    ["button", "submit", "reset"].includes(el.type)
-                ) {
-                    el.disabled = true;
-                } else {
-                    el.readOnly = true;
-                }
+            if (!el) return;
 
-                el.classList.add("readonly-style");
+            const tag = el.tagName.toLowerCase();
+
+            if (tag === "select" || tag === "button" || el.type === "button" || el.type === "submit" || el.type === "reset") {
+                el.disabled = true;
+            } else {
+                el.readOnly = true;
             }
+
+            el.classList.add("readonly-style");
         });
     }
 }
@@ -277,9 +276,9 @@ function sendForm(event) {
 document.querySelector("#form").addEventListener("submit", sendForm);
 
 document.addEventListener("DOMContentLoaded", () => {
+    fillForm();
+    openFromEmail();
     populateListComuniCF();
     populateListComuni();
     populateListProvincie();
-    fillForm();
-    openFromEmail();
 });
