@@ -212,7 +212,7 @@ document.querySelector('#datanascita').addEventListener('change', function () {
         divgenitore.innerHTML = `
             <hr>
             <h2 id="sectionheader">Dati dei Genitori</h2>
-            <span>È necessario inserire almeno il nome di uno dei due genitori<span><br>
+            <span class="msg">È necessario inserire il nome e il cognome di almeno uno dei due genitori<span><br>
                 <div class="row">
                        <div class="col-md-6">
                               <label for="00NR2000009cmHl">Nome e cognome genitore A o rappresentante legale<span id="colored">*</span></label>
