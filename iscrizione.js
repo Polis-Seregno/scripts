@@ -207,6 +207,7 @@ document.querySelector("#city").addEventListener("change", async function () {
 document.querySelector('#datanascita').addEventListener('change', function () {
     const dataNascita = this.value;
     const divgenitore = document.querySelector("#dati_genitore");
+    const contattiMsg = document.querySelector("#contatti-msg");
 
     if (!isMaggiorenne(dataNascita)) {
         divgenitore.innerHTML = `
@@ -215,7 +216,7 @@ document.querySelector('#datanascita').addEventListener('change', function () {
             </div>
             <div class="card-body">
                 <p class="text-muted mb-3">
-                    Inserire i dati del genitore o del rappresentante legale.
+                    Inserire i dati dei genitori o del rappresentante legale.
                 </p>
 
                 <div class="row g-3">
@@ -229,8 +230,10 @@ document.querySelector('#datanascita').addEventListener('change', function () {
                     </div>
                 </div>
             </div>`;
+        contattiMsg.innerHTML = `In caso di minorenni inseririre email e cellulare di un genitore`
     } else {
         divgenitore.innerHTML = "";
+        contattiMsg.innerHTML = "";
     }
 });
 
