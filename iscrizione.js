@@ -210,19 +210,25 @@ document.querySelector('#datanascita').addEventListener('change', function () {
 
     if (!isMaggiorenne(dataNascita)) {
         divgenitore.innerHTML = `
-            <hr>
-            <h2 id="sectionheader">Dati dei Genitori</h2>
-            <span class="msg">È necessario inserire il nome e il cognome di almeno uno dei due genitori<span><br>
-                <div class="row">
-                       <div class="col-md-6">
-                              <label for="00NR2000009cmHl">Nome e cognome genitore A o rappresentante legale<span id="colored">*</span></label>
-                              <input id="00NR2000009cmHl" maxlength="255" name="00NR2000009cmHl" size="20" type="text" required class="form-control"><br>
-                       </div>
-                       <div class="col-md-6">
-                              <label for="00NR2000009cmJN">Nome e cognome genitore B o rappresentante legale</label>
-                              <input id="00NR2000009cmJN" maxlength="255" name="00NR2000009cmJN" size="20" type="text" class="form-control"><br>
-                       </div>
-                </div>`;
+            <div class="card-header">
+                <h5 class="mb-0">Dati del Genitore</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">
+                    Inserire i dati del genitore o del rappresentante legale.
+                </p>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nome e cognome GENITORE A <span class="red">*</span></label>
+                        <input id="00NR2000009cmHl" name="00NR2000009cmHl" type="text" class="form-control" maxlength="255" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nome e cognome GENITORE B</label>
+                        <input id="00NR2000009cmJN" name="00NR2000009cmJN" type="text" class="form-control" maxlength="255">
+                    </div>
+                </div>
+            </div>`;
     } else {
         divgenitore.innerHTML = "";
     }
