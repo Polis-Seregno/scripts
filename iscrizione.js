@@ -230,6 +230,7 @@ document.querySelector('#datanascita').addEventListener('change', function () {
                     </div>
                 </div>
             </div>`;
+        divgenitore.classList.add("card shadow-sm mb-4");
         contattiMsg.innerHTML = `In caso di minorenni inseririre email e cellulare di un genitore`
     } else {
         divgenitore.innerHTML = "";
