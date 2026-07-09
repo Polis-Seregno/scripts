@@ -266,7 +266,6 @@ function dateFormatter(idInputDate, idCampoHidden) {
     console.log(dataFormattata)
 }
 
-
 function checkEmailsMatch() {
     const email = document.querySelector("#email");
     const confirmEmail = document.querySelector("#confirmEmail");
@@ -282,7 +281,10 @@ function checkEmailsMatch() {
 document.querySelector("#email").addEventListener("input", checkEmailsMatch);
 document.querySelector("#confirmEmail").addEventListener("input", checkEmailsMatch);
 
+
 function sendForm(event) {
+    const enrollmentValue = document.querySelector("#enrollment").value;
+    const messageDiv = document.querySelector("#enrollmentError");
     event.preventDefault();
     UpperCase();
 
@@ -290,7 +292,22 @@ function sendForm(event) {
     dateFormatter("#docexpdate",'[id="00NR2000002J41x"]');
 
     if (checkEmailsMatch()) {
-        decodeAndSubmitForm();
+        if (enrollmentValue !== "") {
+            decodeAndSubmitForm();
+        } else {
+            messageDiv.classList.add("card");
+            messageDiv.classList.add("shadow-sm");
+            messageDiv.classList.add("mb-4");
+            messageDiv.innerHTML = `
+            <div class="card-body">
+                <p class="text-muted">
+                    Impossibile inviare il modulo!
+                </p>
+                <p class="text-muted">
+                    Contattare iscrizioni@sgp2seregno.com
+                </p>
+            </div>`
+        }
     }
 }
 
