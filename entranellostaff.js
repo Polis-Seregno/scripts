@@ -60,6 +60,13 @@ function capitalizeWords(str) {
     return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 
+async function fetchComuniData() {
+    const url = atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL1BvbGlzLVNlcmVnbm8vSlNPTnNAcmVmcy9oZWFkcy9tYWluL2NvbXVuaUlULmpzb24=");
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Errore nel recupero del file JSON");
+    return await response.json();
+}
+
 async function fetchComuniCF() {
     const url = atob("aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL1BvbGlzLVNlcmVnbm8vSlNPTnNAcmVmcy9oZWFkcy9tYWluL2NvbXVuaUNGLmpzb24=");
     const response = await fetch(url);
@@ -110,51 +117,60 @@ async function calcolaCodiceFiscaleHandler() {
     }
 }
 
-document.querySelector("#calcolacf").addEventListener("click", calcolaCodiceFiscaleHandler);
+async function populateListProvincie() {
+    try {
+        const data = await fetchComuniData();
+        const datalist = document.querySelector('#listaprovincie');
+        const sigleSet = new Set(Object.values(data).map(comune => comune.sigla_provincia));
 
-document.querySelector('#datanascita').addEventListener('change', function () {
-    const dataNascita = this.value;
-    const divgenitore = document.querySelector("#dati_genitore");
+        Array.from(sigleSet).sort().forEach(sigla => {
+            const option = document.createElement('option');
+            option.value = sigla;
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Errore:', error);
+    }
+}
 
-    if (!isMaggiorenne(dataNascita)) {
-        divgenitore.innerHTML = `
-            <div class="card-header">
-                <h5 class="mb-0">Dati del Genitore</h5>
-            </div>
-            <div class="card-body">
-                <p class="text-muted mb-3">
-                    Inserire i dati dei genitori o del rappresentante legale.
-                </p>
+async function populateListComuni() {
+    try {
+        const data = await fetchComuniData();
+        const datalist = document.querySelector("#listacomuni");
+        const codiciAggiunti = new Set();
 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Nome e cognome GENITORE A <span class="red">*</span></label>
-                        <input id="00NR2000009cmHl" name="00NR2000009cmHl" type="text" class="form-control" maxlength="255" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Nome e cognome GENITORE B</label>
-                        <input id="00NR2000009cmJN" name="00NR2000009cmJN" type="text" class="form-control" maxlength="255">
-                    </div>
-                </div>
-            </div>`;
-        divgenitore.classList.add("card");
-        divgenitore.classList.add("shadow-sm");
-        divgenitore.classList.add("mb-4");
-    } else {
-        divgenitore.innerHTML = "";
+        for (const comune of Object.values(data)) {
+            if (!codiciAggiunti.has(comune.codice)) {
+                codiciAggiunti.add(comune.codice);
+                const option = document.createElement('option');
+                option.value = comune.denominazione;
+                datalist.appendChild(option);
+            }
+        }
+    } catch (error) {
+        console.error('Errore:', error);
+    }
+}
+
+document.querySelector("#city").addEventListener("change", async function () {
+    const comuneNome = this.value;
+    const capfield = document.querySelector("#zip");
+    const provinciafield = document.querySelector("#state");
+    try {
+        const data = await fetchComuniData();
+        for (const comune of Object.values(data)) {
+            if (comune.denominazione === comuneNome) {
+                capfield.value = comune.cap;
+                provinciafield.value = comune.sigla_provincia;
+                break;
+            }
+        }
+    } catch (error) {
+        console.error('Errore:', error);
     }
 });
 
-function isMaggiorenne(birthDate) {
-    const oggi = new Date();
-    const nascita = new Date(birthDate);
-    let age = oggi.getFullYear() - nascita.getFullYear();
-    const monthDiff = oggi.getMonth() - nascita.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && oggi.getDate() < nascita.getDate())) {
-        age--;
-    }
-    return age >= 18;
-}
+document.querySelector("#calcolacf").addEventListener("click", calcolaCodiceFiscaleHandler);
 
 function dateFormatter(idInputDate, idCampoHidden) {
     const inputDate = document.querySelector(idInputDate);
@@ -202,5 +218,7 @@ document.querySelector("#form").addEventListener("submit", sendForm);
 
 document.addEventListener("DOMContentLoaded", () => {
     fillForm();
+    populateListComuni();
+    populateListProvincie();
     populateListComuniCF().then(r => {});
 });
