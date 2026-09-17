@@ -19,7 +19,7 @@ function getQueryParams() {
 function fillForm() {
     const params = getQueryParams();
     for (const key in params) {
-        const element = document.getElementById(key)[0];
+        const element = document.getElementsByName(key)[0];
         if (element) {
             element.value = params[key];
         }
