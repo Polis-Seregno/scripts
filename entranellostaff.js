@@ -184,7 +184,6 @@ function dateFormatter(idInputDate, idCampoHidden) {
     const dataFormattata = date.getDate().toString() + "/" + month.toString() + "/" + date.getFullYear().toString();
 
     campoHidden.value = dataFormattata;
-    console.log(dataFormattata)
 }
 
 function checkEmailsMatch() {
