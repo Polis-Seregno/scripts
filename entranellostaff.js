@@ -1,4 +1,4 @@
-import { calcoloCodiceFiscale } from './calcoloCodiceFiscale.js';
+import {calcoloCodiceFiscale} from './calcoloCodiceFiscale.js';
 
 function decodeAndSubmitForm() {
     const form = document.querySelector("#form");
@@ -184,6 +184,7 @@ function dateFormatter(idInputDate, idCampoHidden) {
     const dataFormattata = date.getDate().toString() + "/" + month.toString() + "/" + date.getFullYear().toString();
 
     campoHidden.value = dataFormattata;
+    console.log(dataFormattata)
 }
 
 function checkEmailsMatch() {
@@ -198,6 +199,14 @@ function checkEmailsMatch() {
     return match;
 }
 
+function setDescription(){
+    const description = document.querySelector("#description");
+    const sport = document.querySelector("#sport").value;
+    const team = document.querySelector("#team").value;
+    let infoTeam = "SPORT: " + sport + "\nSQUADRA: " + team + "\n";
+    description.value = infoTeam + description.value;
+}
+
 document.querySelector("#email").addEventListener("input", checkEmailsMatch);
 document.querySelector("#confirmEmail").addEventListener("input", checkEmailsMatch);
 
@@ -207,6 +216,7 @@ function sendForm(event) {
 
     dateFormatter("#datanascita",'[id="00NR2000002BNrN"]');
     dateFormatter("#docexpdate",'[id="00NR2000002J41x"]');
+    setDescription();
 
     if (checkEmailsMatch()) {
         decodeAndSubmitForm();
