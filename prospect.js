@@ -115,24 +115,53 @@ document.querySelector("#calcolacf").addEventListener("click", calcolaCodiceFisc
 document.querySelector('#datanascita').addEventListener('change', function () {
     const dataNascita = this.value;
     const divgenitore = document.querySelector("#dati_genitore");
+    const divAlertContatti = document.querySelector("#alert-contatti");
 
     if (!isMaggiorenne(dataNascita)) {
         divgenitore.innerHTML = `
-            <hr>
-            <h2 id="sectionheader">Dati dei Genitori</h2>
-            <span class="msg">È sufficiente inserire cognome e nome di uno dei due genitori<span><br>
-                <div class="row">
-                       <div class="col-md-6">
-                              <label for="00NR2000009cmHl">Nome e cognome genitore A o rappresentante legale<span id="colored">*</span></label>
-                              <input id="00NR2000009cmHl" maxlength="255" name="00NR2000009cmHl" size="20" type="text" required class="form-control"><br>
-                       </div>
-                       <div class="col-md-6">
-                              <label for="00NR2000009cmJN">Nome e cognome genitore B o rappresentante legale</label>
-                              <input id="00NR2000009cmJN" maxlength="255" name="00NR2000009cmJN" size="20" type="text" class="form-control"><br>
-                       </div>
+            <div class="card-header">
+                <h5 class="mb-0">Dati del Genitore</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">
+                    Inserire i dati dei genitori o del rappresentante legale.
+                </p>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nome e cognome GENITORE A <span class="red">*</span></label>
+                        <input id="00NR2000009cmHl" name="00NR2000009cmHl" type="text" class="form-control" maxlength="255" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nome e cognome GENITORE B</label>
+                        <input id="00NR2000009cmJN" name="00NR2000009cmJN" type="text" class="form-control" maxlength="255">
+                    </div>
+                </div>
+            </div>`;
+        divgenitore.classList.add("card");
+        divgenitore.classList.add("shadow-sm");
+        divgenitore.classList.add("mb-4");
+        divAlertContatti.innerHTML = `
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill"></i> Attenzione</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <p class="mb-2">
+                            Per gli atleti minorenni è <strong>obbligatorio indicare un indirizzo email
+                            appartenente a un genitore o tutore legale.</strong>
+                        </p>
+
+                        <p class="mb-2">
+                            L’indirizzo verrà utilizzato per le comunicazioni relative all’iscrizione,
+                            al tesseramento e alle attività sportive dell’atleta.
+                        </p>
+                    </div>
                 </div>`;
+        divAlertContatti.style.padding = "20px";
     } else {
         divgenitore.innerHTML = "";
+        divAlertContatti.innerHTML = "";
     }
 });
 
@@ -162,7 +191,6 @@ function dateFormatter(idInputDate, idCampoHidden) {
     console.log(dataFormattata)
 }
 
-
 function checkEmailsMatch() {
     const email = document.querySelector("#email");
     const confirmEmail = document.querySelector("#confirmEmail");
@@ -170,7 +198,7 @@ function checkEmailsMatch() {
     const submitBtn = document.querySelector("#invia");
 
     const match = email.value.toLowerCase() === confirmEmail.value.toLowerCase();
-    message.innerHTML = match ? "" : "<span id=\"colored\">Le email inserite non coincidono!</span>";
+    message.innerHTML = match ? "" : "<span class=\"red\">Le email inserite non coincidono!</span>";
     submitBtn.disabled = !match;
     return match;
 }
