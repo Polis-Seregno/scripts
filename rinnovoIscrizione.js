@@ -1,4 +1,4 @@
-const Active = true;
+const Active = false;
 
 function applyActiveState() {
     document.getElementById("form").hidden = !Active;
