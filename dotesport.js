@@ -1,3 +1,11 @@
+const Active = true;
+
+function applyActiveState() {
+    document.querySelector("#form").hidden = !Active;
+    document.querySelector("#avviso").hidden = Active;
+}
+applyActiveState();
+
 function decodeAndSubmitForm() {
     const form = document.querySelector("#form");
     form.action = atob("aHR0cHM6Ly93ZWJ0by5zYWxlc2ZvcmNlLmNvbS9zZXJ2bGV0L3NlcnZsZXQuV2ViVG9DYXNlP2VuY29kaW5nPVVURi04Jm9yZ0lkPTAwRDA2MDAwMDAxYTlDOA==");
@@ -37,6 +45,7 @@ function capitalizeWords(str) {
 
 function sendForm(event) {
     event.preventDefault();
+    if (!Active) return;
     UpperCase();
     decodeAndSubmitForm();
 }
